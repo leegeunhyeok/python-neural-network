@@ -9,17 +9,30 @@ pip install numpy
 pip install scipy
 ```
 
+서버 예제를 실행하시려면 `Flask`와 `PIL` 라이브러리도 설치해야합니다.
+```bash
+pip install flask
+pip install pillow
+```
+
 # 실행
 - 실행 전 학습 데이터 및 테스트 데이터가 존재해야합니다.
 - 아래 [MNIST 데이터](#mnist-데이터) 항목에서 확인 가능합니다.
 ```bash
 python neural_network.py
 ```
+# 서버 예제 실행
+직접 손글씨를 그린 후 신경망을 통해 결과를 확인해 볼 수 있습니다.
+```bash
+# 현재 디렉토리에서 실행할 경우
+python ./server/server.py
+```
 
 # 결과
 <img src="./result.png"><br>
 위 결과는 60000개의 레코드 학습 및 10000개의 레코드를 테스트 한 결과입니다.
 - 학습률(코드 내의 learning_rate)은 `0.1` 로 진행
+- 초기 가중치는 랜덤이기 때문에 매번 달라질 수 있음
 
 
 # MNIST 데이터
