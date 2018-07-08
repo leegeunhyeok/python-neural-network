@@ -1,0 +1,175 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <title>손으로 쓴 숫자 분석</title>
+    <style>
+
+      #main {
+        margin: auto;
+        text-align: center;
+      }
+
+      #main h2 { color: dodgerblue; }
+
+      #canvas {
+        box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.3);
+      }
+      
+      #button-area { margin-top: 50px; }
+      #button-area button {
+        border: 1px solid dodgerblue;
+        border-radius: 10px;
+        background-color: #fff;
+        padding: 5px 10px;
+        color: dodgerblue;
+        outline: none;
+        cursor: pointer;
+        transition: .5s;
+      }
+
+      #button-area button:hover {
+        color: #fff;
+        background-color: dodgerblue;
+      }
+
+      #result {
+        color: dodgerblue;
+        transition: .5s;
+      }
+
+      .hide {
+        opacity: 0.0;
+      }
+    </style>
+    <script>
+      var canvase, ctx
+      var pos = {
+        drawable: false,
+        x: -1,
+        y: -1
+      }
+
+      window.onload = () => {
+        canvas = document.getElementById('canvas')
+        ctx = canvas.getContext('2d')
+        ctx.lineWidth = 5
+        canvas.addEventListener('mousedown', listener)
+        canvas.addEventListener('mousemove', listener)
+        canvas.addEventListener('mouseup', listener)
+        canvas.addEventListener('mouseout', listener)
+
+        document.getElementById('check').onclick = check
+        document.getElementById('reset').onclick = reset
+      }
+
+      const listener = event => {
+        switch (event.type) {
+          case 'mousedown': {
+            initDraw(event)
+            break
+          }
+          
+          case 'mousemove': {
+            if (pos.drawable) draw(event)
+            break
+          }
+
+          case 'mouseout':
+          case 'mouseup': {
+            finishDraw()
+            break
+          }
+        }
+      }
+
+      const initDraw = event => {
+        document.getElementById('result').classList.add('hide')
+        ctx.beginPath()
+        pos.drawable = true
+        let position = getPosition(event)
+        pos.x = position.X
+        pos.y = position.y
+        ctx.moveTo(pos.x, pos.y)
+      }
+
+      const draw = event => {
+        let position = getPosition(event)
+        ctx.lineTo(position.X, position.Y)
+        pos.x = position.X
+        pos.y = position.Y
+        ctx.stroke()
+      }
+
+      const finishDraw = () => {
+        pos.drawable = false
+        pos.x = -1
+        pos.y = -1
+      }
+
+      const getPosition = event => {
+        let x = event.pageX - canvas.offsetLeft
+        let y = event.pageY - canvas.offsetTop
+        return {X: x, Y: y}
+      }
+
+      const check = () => {
+        let result = document.getElementById('result')
+        result.classList.remove('hide')
+        result.textContent = '[]'
+        const img = canvas.toDataURL("image/png");
+        makeRequest('/query', img.replace('data:image/png;base64,', ''))
+      }
+
+      const reset = () => {
+        document.getElementById('result').classList.add('hide')
+        ctx.clearRect(0, 0, canvas.width, canvas.height);
+      }
+
+      const makeRequest = (url, data) => {
+        if (window.XMLHttpRequest) { // Mozilla, Safari, ...
+          httpRequest = new XMLHttpRequest();
+        } else if (window.ActiveXObject) { // IE
+          try {
+            httpRequest = new ActiveXObject("Msxml2.XMLHTTP");
+          } 
+          catch (e) {
+            try {
+              httpRequest = new ActiveXObject("Microsoft.XMLHTTP");
+            } 
+            catch (e) {}
+          }
+        }
+
+        if (!httpRequest) {
+          alert('Giving up :( Cannot create an XMLHTTP instance');
+          return false;
+        }
+        httpRequest.onreadystatechange = alertContents;
+        httpRequest.open('POST', url, true);
+        httpRequest.setRequestHeader('Content-Type', 'application/json');
+        httpRequest.send(JSON.stringify({data: data}));
+      }
+
+      const alertContents = () => {
+        if (httpRequest.readyState === 4) {
+          if (httpRequest.status === 200) {
+            alert(httpRequest.responseText);
+          } else {
+            alert('서버 전송 에러');
+          }
+        }
+      }
+
+    </script>
+  </head>
+  <div id="main">
+    <h2>숫자를 적어주세요!</h2>
+    <canvas id="canvas" width="200px" height="200px"></canvas>
+    <h3 id="result" class="hide">[]</h3>
+    <div id="button-area">
+      <button id="check">결과확인</button>
+      <button id="reset">다시그리기</button>
+    </div>
+  </div>
+</html>
