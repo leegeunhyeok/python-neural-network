@@ -19,6 +19,8 @@ class neural_network:
         self.w_in_hidden = numpy.random.normal(0.0, pow(self.hidden_nodes, -0.5), (self.hidden_nodes, self.input_nodes))
         # 행렬 크기: 출력계층 노드 수 * 은닉계층 노드 수
         self.w_hidden_out = numpy.random.normal(0.0, pow(self.output_nodes, -0.5), (self.output_nodes, self.hidden_nodes))
+        
+        # 활성화 함수는 시그모이드 함수 사용
         self.activation_function = lambda x: scipy.special.expit(x)
     
     # 신경망 학습 시키기
