@@ -39,14 +39,17 @@ def query():
         inputs = (numpy.asfarray(pixel) / 255.0 * 0.99) + 0.01
         print(inputs)
         c = 0
+        print("+", "--" * 28, end="+\n", sep="")
         for w in range(28):
+            print("|", end="")
             for h in range(28):
                 if (inputs[c] == 0.01):
                     print("  ", end="")
                 else:
                     print("##", end="")
                 c += 1
-            print("")
+            print("|")
+        print("+", "--" * 28, end="+\n", sep="")
 
         # 변환된 이미지 저장
         img.save('convert.png')
