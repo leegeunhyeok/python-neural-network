@@ -34,6 +34,17 @@ python ./server/server.py
 - 학습률(코드 내의 learning_rate)은 `0.1` 로 진행
 - 초기 가중치는 랜덤이기 때문에 매번 달라질 수 있음
 
+# 서버 예제 결과
+- 클라이언트
+<br>
+<img src="./server_1.png">
+<br>
+결과 확인 버튼을 누르면 분석 후 `[]` 안에 결과를 출력합니다.
+
+- 서버 콘솔
+<br>
+<img src="./server_2.png">
+
 
 # MNIST 데이터
 자세한 내용은 [여기](https://github.com/leegeunhyeok/python-neural-network/blob/master/mnist_dataset/MNIST_DATA.md)에서 확인 가능합니다.

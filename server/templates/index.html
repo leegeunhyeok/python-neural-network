@@ -54,6 +54,8 @@
         canvas = document.getElementById('canvas')
         ctx = canvas.getContext('2d')
         ctx.lineWidth = 5
+        ctx.fillStyle = '#FFFFFF'
+        ctx.fillRect(0, 0, canvas.width, canvas.height)
         canvas.addEventListener('mousedown', listener)
         canvas.addEventListener('mousemove', listener)
         canvas.addEventListener('mouseup', listener)
@@ -123,7 +125,8 @@
 
       const reset = () => {
         document.getElementById('result').classList.add('hide')
-        ctx.clearRect(0, 0, canvas.width, canvas.height);
+        ctx.clearRect(0, 0, canvas.width, canvas.height)
+        ctx.fillRect(0, 0, canvas.width, canvas.height)
       }
 
       const makeRequest = (url, data) => {
@@ -154,9 +157,10 @@
       const alertContents = () => {
         if (httpRequest.readyState === 4) {
           if (httpRequest.status === 200) {
-            alert(httpRequest.responseText);
+            let data = JSON.parse(httpRequest.responseText)
+            document.getElementById('result').textContent = `[${data.result}]`
           } else {
-            alert('서버 전송 에러');
+            alert('서버 전송 에러')
           }
         }
       }
